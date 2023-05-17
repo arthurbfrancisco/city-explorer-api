@@ -49,11 +49,15 @@ app.get('/weather', (request, response, next) => {
     let searchQuery = request.query.cityData;
     // Find the city in your JSON data that matches the city name from the query parameter
     let city = data.find(cityData => cityData.city_name.toLowerCase() === searchQuery.toLowerCase())
-
+    //if (!city) {
+    //return response.status(404).send('City not found');
     // Map the weather data for each day to a new instance of the Forecast class
     // Get the first 3 days of data
+    //This slice(0, 3) will select the first three days from the city.data array. 
+    //If your city.data array does not have data for at least three days, this code will 
+    //return fewer than three days. If city.data is empty, threeDaysData will also be an empty array.
     let threeDaysData = city.data.slice(0, 3);
-
+    //let dataMap = city.data.map(oneDay => new Forecast(oneDay));
     let dataMap = threeDaysData.map(oneDay => new Forecast(oneDay));
 
     // Send the mapped data back in the response
@@ -62,6 +66,9 @@ app.get('/weather', (request, response, next) => {
     // If an error occurs in the try block, it will be passed to this catch block
     next(error);
   }
+  // app.use((err, req, res, next) => {
+  //   console.error(err.stack);
+  //   res.status(500).send('Something broke!');
 });
 
 // A catch-all route that will respond if no other route matches the request. This is useful for handling 404 errors.
