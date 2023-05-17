@@ -7,7 +7,7 @@ console.log('our first server');
 const express = require('express');
 // Include the dotenv library which loads environment variables from a .env file into process.env
 require('dotenv').config();
-// Include the data from your local JSON file (weather data)
+// Include the data from local JSON file (weather data)
 let data = require('./data/weather.json');
 // Include the CORS library to enable Cross Origin Resource Sharing
 const cors = require('cors');
@@ -26,7 +26,7 @@ const PORT = process.env.PORT || 3002;
 
 // ROUTES
 
-// Root route. When a GET request is made to the root of your website (http://localhost:3002/), it will respond with 'hello'
+// Root route. When a GET request is made to the root of your website (http://localhost:3000/), it will respond with 'hello'
 
 // A route to say hello to a user. The name of the user is received as a query parameter
 app.get('/', (request, response) => {
@@ -51,7 +51,10 @@ app.get('/weather', (request, response, next) => {
     let city = data.find(cityData => cityData.city_name.toLowerCase() === searchQuery.toLowerCase())
 
     // Map the weather data for each day to a new instance of the Forecast class
-    let dataMap = city.data.map(oneDay => new Forecast(oneDay));
+    // Get the first 3 days of data
+    let threeDaysData = city.data.slice(0, 3);
+
+    let dataMap = threeDaysData.map(oneDay => new Forecast(oneDay));
 
     // Send the mapped data back in the response
     response.status(200).send(dataMap);
@@ -67,7 +70,6 @@ app.get('*', (request, response) => {
 });
 
 //  CLASSES
-
 // A class representing a weather forecast
 class Forecast {
   constructor(day) {
@@ -80,12 +82,10 @@ class Forecast {
 
 // LISTEN 
 // Start the server listening on the defined port
-
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
 
-// Data is array with three objects: locationIQ LAT/LON BACK RESPONES BUILD MAP INFORMATION OF WEATHER
+// Data is array with three objects: DESCRIPTION, locationIQ LAT,LON DATED BACK RESPONES BUILD MAP INFORMATION OF WEATHER
 //FORECAST IN DATA 1,2,3 DAYS, EXTRACT AND USE IT
 //ROUTE BACKEND WEATHER
-
 //REQUEST.QUERY should have : "lat": lon: searchQuery:""
 // concatanate : "description": "Low of 17.9" "date": "date": "2021-0401"
