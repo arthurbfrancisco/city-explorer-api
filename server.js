@@ -1,9 +1,6 @@
 'use strict';
 
 console.log('our first server');
-
-
-
 //  REQUIRE
 
 // Include the express library which is a minimal and flexible Node.js web application framework
