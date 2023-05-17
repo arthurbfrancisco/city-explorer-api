@@ -43,7 +43,7 @@ app.get('/sayHello', (request, response) => {
 
 // A route to return weather data for a particular city. The name of the city is received as a query parameter
 app.get('/weather', (request, response, next) => {
-  // http://localhost:3001/weather?cityData=seattle
+  // http://localhost:3000/weather?cityData=seattle
   try {
     console.log('hi');
     let searchQuery = request.query.cityData;
